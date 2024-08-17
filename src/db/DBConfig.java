@@ -4,8 +4,6 @@
  */
 package db;
 
-import exceptions.DBConnectorException;
-
 /**
  *
  * @author Aca
@@ -16,7 +14,7 @@ public class DBConfig {
     private String password;
 
     public DBConfig() {}
-    public DBConfig(String dbUrl, String user, String password) throws DBConnectorException {
+    public DBConfig(String dbUrl, String user, String password) throws RuntimeException {
         setDbUrl(dbUrl);
         setUser(user);
         this.password = password;
@@ -25,17 +23,17 @@ public class DBConfig {
     public String getDbUrl() {
         return dbUrl;
     }
-    public final void setDbUrl(String dbUrl) throws DBConnectorException {
+    public final void setDbUrl(String dbUrl) throws RuntimeException {
         if(dbUrl == null || dbUrl.isEmpty())
-            throw new DBConnectorException("Databes url cannot be empty");
+            throw new RuntimeException("Databes url cannot be empty");
         this.dbUrl = dbUrl;
     }
     public String getUser() {
         return user;
     }
-    public final void setUser(String user) throws DBConnectorException {
+    public final void setUser(String user) throws RuntimeException {
         if(user == null || user.isEmpty())
-            throw new DBConnectorException("Username cannot be empty");
+            throw new RuntimeException("Username cannot be empty");
         this.user = user;
     }
     public String getPassword() {
