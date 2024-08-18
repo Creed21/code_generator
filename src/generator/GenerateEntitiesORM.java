@@ -48,7 +48,7 @@ public class GenerateEntitiesORM {
                 generateORMClasses(path, "model", schemaName, tableNames);
                 copyServer(Path.of(path));
                 buildProject(path);
-                createJar(path, path+"\\out\\"+packageName+".jar", "main.MainServer");
+                createJar(path, path+"\\out\\MainServer.jar", "main.MainServer");
                 break;
             default:
                 throw new IllegalArgumentException("Nepoznat mod rada.");
