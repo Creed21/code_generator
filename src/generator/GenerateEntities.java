@@ -40,7 +40,7 @@ public class GenerateEntities //implements GenerationProcess
         return generator
                 .setClassName(tableName)
                 .createPackageBeginning(packageName)
-                .createImports()
+                .createImportsORM()
                 .createClassBeginning()
                 .createFileds(readFields)
                 .createConstructors(readFields)
@@ -69,6 +69,7 @@ public class GenerateEntities //implements GenerationProcess
         // Write the content to the Java class file
         try ( FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(classData);
+            fileWriter.flush();
         } catch (IOException e) {
             System.err.println("Error writing class to file: " + e.getMessage());
         }

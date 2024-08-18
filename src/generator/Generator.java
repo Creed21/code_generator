@@ -4,7 +4,9 @@
  */
 package generator;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,14 +77,6 @@ public class Generator {
 
         return result.toString();
     }
-    public final String processFieldName(String fieldName) {
-        StringBuilder sb = new StringBuilder();
-        String[] partsOfName = fieldName.split("_");
-        for(int i = 1; i < partsOfName.length; i++) {
-            sb.append(capitalize(partsOfName[i]));
-        }
-        return sb.toString();
-    }
 
     public Generator createPackageBeginning(String packageName) {
         classDefinition.append("package ").append(packageName).append(";\n\n");
@@ -93,12 +87,24 @@ public class Generator {
         classDefinition.append("public class ").append(className).append(" {\n");
         return this;
     }
+    public Generator createClassBeginningORM() {
+        long serialVersionUID = Math.abs(new Random().nextLong());
+        classDefinition
+                .append("public class ").append(className)
+                .append(" extends GenericObject")
+                .append(" implements Serializable")
+                .append(" {\n")
+                .append("\tprivate static final long serialVersionUID = ").append(serialVersionUID).append("L;\n")
+                .append("\n");
+        return this;
+    }
     public Generator createClassEnd() {
         classDefinition.append("}");
         return this;
     }
     
-    public Generator createImports() {
+    public Generator createImportsORM() {
+        classDefinition.append( "import java.io.Serializable;\n");
         fields.forEach((fieldName, fieldType) -> {
             switch (fieldType) {
                 case "java.sql.Timestamp":
@@ -136,6 +142,19 @@ public class Generator {
         classDefinition.append("\n");
         return this;
     }
+
+    public Generator createFieldsForORM(List<String> primaryKeys) {
+        // create fileds with primary key annotation
+        String modifier = "\tprivate";
+        fields.forEach((fieldName, fieldType) -> {
+            if(primaryKeys.contains(fieldName)) {
+                classDefinition.append("\t@PrimaryKeyAnnotation(PrimaryKey = \"Y\")\n");
+            }
+            classDefinition.append(modifier).append(" ").append(fieldType).append(" ").append(fieldName).append(";\n");
+        });
+        classDefinition.append("\n");
+        return this;
+    }
     
     public Generator createConstructors(Map<String, String> fields) {
         createEmptyConstructor(className);
@@ -143,8 +162,20 @@ public class Generator {
         return this;
     }
 
+    public Generator createConstructorsORM(Map<String, String> fields) {
+        createEmptyConstructor(className);
+        createAnnotationForORMConstuctor();
+        createFullConstructor(className, fields);
+        return this;
+    }
+
     private StringBuilder createEmptyConstructor(String tableName) {
         return classDefinition.append("\tpublic ").append(tableName).append("() {};\n");
+    }
+
+    public Generator createAnnotationForORMConstuctor() {
+        classDefinition.append("\t@ConstructorAnnotation(forGetRecord=\"Y\")\n");
+        return this;
     }
     
     private Generator createFullConstructor(String tableName, Map<String, String> fields) {
