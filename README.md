@@ -70,6 +70,7 @@ Code Compilation:
 
 After generating the Java source code, the tool automatically compiles the code into .class files.
 The compiled code is ready to be executed immediately after generation.
+
 #Option 2: Generate ORM-Only Model Classes
 In this option, the tool generates only the ORM model classes without creating a complete application. This is useful if the user wants to integrate these ORM classes into an existing project or if they only need the data models.
 
