@@ -133,7 +133,7 @@ Template Path: Based on the user's selected language, the appropriate template f
 	},
 	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\java_model_template.txt"
 }
-
+```
 Template Language Choice: The user can choose between different templates such as Java, Python, TypeScript, etc. The generator will load the correct template based on the selected language.
 
 
@@ -143,7 +143,7 @@ The template configuration class defines how the template is applied to the sele
 File Path Configuration: The template configuration contains settings for where the generated files should be saved. These paths can be customized, including the root directory, subdirectories, and file extensions, based on the user's input or predefined configurations.
 Example template config (Java config):
 
-```
+
 # java_model_template.txt
 ```
 package ${fileName};
