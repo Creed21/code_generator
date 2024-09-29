@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jjwt-jackson-0.12.5">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/dist/lib/jjwt-jackson-0.12.5.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

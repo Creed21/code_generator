@@ -1,0 +1,15 @@
+package ${fileName};
+
+public class ${tableNameCapitalized} {
+forEachField('${indent}private ${fieldType} ${fieldName};${newLine}')
+
+${indent}public ${tableNameCapitalized}() {}
+
+${indent}public ${tableNameCapitalized}(forEachFieldConcat('${fieldType} ${fieldName}') ) {
+forEachField('${indent}${indent}this.${fieldName} = ${fieldName};${newLine}')
+${indent}}
+
+forEachField('${indent}public void set${fieldNameCapitalized}(${fieldType} ${fieldName}) {${newLine} ${indent}${indent}this.${fieldName} = ${fieldName};${newLine}${indent}}${newLine} ')
+
+forEachField('${indent}public ${fieldType} get${fieldNameCapitalized}() {${newLine}${indent}${indent}return ${fieldName};${indent}${newLine}${indent}}${newLine}')
+}

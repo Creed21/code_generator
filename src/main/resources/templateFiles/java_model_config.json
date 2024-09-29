@@ -1,0 +1,10 @@
+{
+    "placeholders": {
+    	"folderName": "model",
+    	"fileName": "${tableNameCapitalized}",
+    	"extension": "java",
+    	"newLine": "\n",
+    	"indent": "\t"
+	},
+	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\java_model_template.txt"
+}

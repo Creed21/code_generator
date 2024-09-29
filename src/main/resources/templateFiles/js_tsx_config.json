@@ -1,0 +1,10 @@
+{
+    "placeholders": {
+    	"folderName": "js",
+    	"fileName": "${tableName}",
+    	"extension": "tsx",
+    	"newLine": "\n",
+    	"indent": "\t"
+	},
+	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\js_tsx_template.txt"
+}

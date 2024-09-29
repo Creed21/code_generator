@@ -1,0 +1,10 @@
+{
+    "placeholders": {
+    	"folderName": "model_cs",
+    	"fileName": "${tableNameCapitalized}${folderNameCapitalized}",
+    	"extension": "cs",
+    	"newLine": "\n",
+    	"indent": "\t"
+	},
+	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\cs_model_template.txt"
+}

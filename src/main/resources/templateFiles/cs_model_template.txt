@@ -1,0 +1,24 @@
+using System;
+
+namespace Model
+{
+    public class ${TableName}
+    {
+        // Fields
+        forEachField('${indent}private ${fieldType} ${fieldName};${newLine}')
+
+        // Default constructor
+        public ${tableNameCapitalized}()
+        {
+        }
+
+        // Parameterized constructor
+        public ${tableName}(forEachFieldConcat('${fieldType} {fieldName}'))
+        {
+            forEachField('${indent}${indent}${indent}this.${fieldName} = ${fieldName};${newLine}')
+        }
+
+        // Properties
+        forEachField('${indent}public ${fieldType} ${fieldNameCapitalized} { get; set; }${newLine}')
+    }
+}

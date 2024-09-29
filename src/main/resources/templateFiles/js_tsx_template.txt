@@ -1,0 +1,5 @@
+export interface ${tableNameCapitalized} {
+
+forEachField('${indent}${fieldName}?:${fieldType}${newLine}')
+
+}

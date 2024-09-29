@@ -1,0 +1,10 @@
+{
+    "placeholders": {
+    	"folderName": "service",
+    	"fileName": "${tableNameCapitalized}${folderNameCapitalized}",
+    	"extension": "java",
+    	"newLine": "\n",
+    	"indent": "\t"
+	},
+	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\java_service_template.txt"
+}

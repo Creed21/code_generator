@@ -1,0 +1,18 @@
+package ${fileName};
+
+@Service
+public class ${tableNameCapitalized}Service {
+
+${indent}@Autowired private ${tableNameCapitalized}Repository ${tableName}Repostiory;
+
+
+${indent}public void add${tableNameCapitalized}(${tableNameCapitalized} ${tableName}){
+${indent}${indent}${tableName}Repostiory.add(${tableName});
+${indent}}
+
+${indent}public void find${tableNameCapitalized}(${tableNameCapitalized} ${tableName}){
+${indent}${indent}${tableName}Repostiory.find(${tableName});
+${indent}}
+
+
+}
