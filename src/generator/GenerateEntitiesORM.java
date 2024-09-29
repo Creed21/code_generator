@@ -112,6 +112,7 @@ public class GenerateEntitiesORM {
         // List of directories to copy from the "src" directory
         List<String> filenames = List.of(
                 "controller",
+                "database",
                 "db",
                 "exceptions",
                 "systemOperation",
