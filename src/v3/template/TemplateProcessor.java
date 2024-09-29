@@ -1,5 +1,7 @@
 package v3.template;
 
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import v3.generator.Generator;
 
@@ -14,30 +16,29 @@ import java.util.stream.Collectors;
 public class TemplateProcessor {
     private Generator generator;
     private Map<String, String> fields;
+    // String that represents the class/file definition
+    private StringBuilder classDefinition;
     private String className;
-    private StringBuilder classDefinition = new StringBuilder();
+    private TemplateConfig templateConfig;
+    private String template;
+    private List<TemplateConfig> templateConfigs;
+    private List<String> templateConfigNames;
+    private Gson gson;
+
 
     public TemplateProcessor() {
         this.generator = new Generator();
+        this.classDefinition = new StringBuilder();
+        this.gson = new Gson();
     }
 
-    public TemplateProcessor(Map<String, String> fields) {
-        this.fields = generator.getFields();
+    public TemplateProcessor(TemplateConfig templateConfig, String template) {
+        TemplateProcessor tp = new TemplateProcessor();
+        this.templateConfig = templateConfig;
+        this.template = template;
     }
 
-    public void setFields(Map<String, String> fields) {
-        this.fields = fields;
-    }
-
-    public String parseFileBeginning(String template, String className) {
-        return template.replace("{className}", className);
-    }
-
-    public String parseFileEnd(String template) {
-        return template; // Usually, file end doesn't require replacements.
-    }
-
-    public String parsePackageName(String template, String packageName) {
+    public String parsePackageName(String packageName) {
         return template.replace("{packageName}", packageName);
     }
 
@@ -121,7 +122,22 @@ public class TemplateProcessor {
         return str.substring(0, 1).toLowerCase() + str.substring(1);
     }
 
-    private void processPlaceholders(Map<String, String> placeholders, String className) {
+    // replace basic and remaining placeholders
+    // set for the template newLine and indent values
+    // ex. className/TableName, file
+    // Beginning, packageName
+    //      remaining fields and field types
+
+
+    private void processPlaceholders(Map<String, String> placeholders) {
+        // process for each field placeholders
+        // find forEachField('comnad') and for each field in table replace the constuct with field and type values
+
+        fields.forEach((fieldName, fieldType) -> {
+
+        });
+
+        // process remaining placeholders
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue()
@@ -133,29 +149,65 @@ public class TemplateProcessor {
         }
     }
 
+    // process all config files
     public void processTemplates(
-            List<File> jsonTemplates,
+            List<File> jsonTemplateConfigs,
             String path,
             String packageName,
             String schema,
             List<String> tableNames
     ) {
+        // make path
         String outputPath = path+"/"+packageName ;
+
         // make project directory
         new File(outputPath).mkdirs();
+
+        // for each table
+        // go through each template file pair
+        // and generate files
         tableNames.forEach(tableName -> {
-            List<String> tableTemplates = processTemplates(jsonTemplates, outputPath, packageName, schema, tableName);
-            tableTemplates.forEach(tableTemplate -> {
-                createFile(outputPath, tableName, tableTemplate);
+            // for each template config file
+            jsonTemplateConfigs.forEach(jsonTemplateConfig -> {
+                // load template file path from path defined in config named templateFile
+                // in order to read file template
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+
+//                    TemplateConfig config = objectMapper.readValue(new File("config.json"), TemplateConfig.class);
+
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                // process template file
+                String tableTemplate = processTemplates(jsonTemplateConfigs, outputPath, packageName, schema, tableName);
+
+                createFile(outputPath, tableTemplate, tableName, templateConfig.getExtension());
             });
+
+            // load template file
+            // process template file
+//            List<String> tableTemplates = processTemplates(jsonTemplateConfigs, outputPath, packageName, schema, tableName);
+
+//            tableTemplates.forEach(tableTemplate -> {
+//                createFile(outputPath, tableName, tableTemplate);
+//            });
         });
+        // process remaining placeholders
+        // create file
+
         System.out.println("Uspšeno ste generisali kod za domenske klase.");
     }
 
-    public void createFile(String filePath, String fileData) {
-//        String filePath = outputPath + "/" + className + "." + extension;
+    public void createFile(String filePath, String fileData, String className, String extension) {
+        // Create the file path
+        String outputPath = filePath + "/" + className + "." + extension;
+        //        String outputPath = filePath + "/" + className + "." + extension;
         // Write the content to the Java class file
-        try ( FileWriter fileWriter = new FileWriter(filePath)) {
+        try ( FileWriter fileWriter = new FileWriter(outputPath)) {
             fileWriter.write(fileData);
             fileWriter.flush();
         } catch (IOException e) {
@@ -192,7 +244,7 @@ public class TemplateProcessor {
 //		"
 //}
 //}
-    public Map<String, String> processTemplates(
+    public String processTemplates(
             List<File> jsonTemplates,
             String path,
             String packageName,
@@ -206,14 +258,15 @@ public class TemplateProcessor {
             try {
                 // make file reader
                 BufferedReader reader = new BufferedReader(new FileReader(jsonTemplate));
+
                 String templateData = reader.lines().collect(Collectors.joining());
                 Template template = gson.fromJson(templateData, Template.class);
 
                 // make filePath
                 // get fileName from jsonTemplate from field placeholders
-                template.getPlaceholders("placeholders");
+                List<Placeholder> placeholders = template.getPlaceholders();
 
-                String filePath = path + "/" + packageName + "/" + className + ".java";
+                String filePath = path + "/" + packageName + "/" + className + placeholders.get(0);
 
                 // fetch fields from database
                 Map<String, String> fields = generator.getFields();
@@ -223,11 +276,11 @@ public class TemplateProcessor {
                 // process remaining placeholders
 
                 // tetClassDefinition
-                String templateForEach = parseForEachCommand((String) template.get("classDefinition"), fields);
+//                String templateForEach = parseForEachCommand((String) template.get("classDefinition"), fields);
 
 
                 // Now process the main class definition template
-                String classTemplate = (String) templateMap.get("classDefinition");
+//                String classTemplate = (String) template.get("classDefinition");
 
                 // Replace all placeholders in the class template
 //                for (Map.Entry<String, String> entry : placeholders.entrySet()) {
@@ -236,17 +289,22 @@ public class TemplateProcessor {
 
 
 
-                tableTemplates.add(classTemplate);
+//                tableTemplates.add(classTemplate);
 
                 // empty string builder for next class/file
                 generator.getStringBuilder().setLength(0);
+
+                reader.close();
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }
-        return tableTemplates;
+//        return tableTemplates;
+        return null;
     }
+
 
     public List<File> chooseJsonFiles() {
         // Create a JFileChooser instance

@@ -10,6 +10,7 @@ public class Template {
     private String templateDefinition;
     private List<File> templateFile;
 
+
     public Template() {}
 
     public List<Placeholder> getPlaceholders() {

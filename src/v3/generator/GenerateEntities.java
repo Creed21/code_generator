@@ -4,7 +4,6 @@
  */
 package v3.generator;
 
-import v2.db.DBConfig;
 import v3.template.TemplateProcessor;
 
 import java.io.File;

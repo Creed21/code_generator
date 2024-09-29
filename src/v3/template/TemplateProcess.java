@@ -27,8 +27,6 @@ public class TemplateProcess {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        List<File> jsonTemplates = templateProcessor.chooseJsonFiles();
-
         System.out.println("Generator V3 - šabloni za generisanje koda na osnovu relacione baze");
         System.out.println("Odaberite šemu tako što ćete uneti njen naziv:");
         System.out.println("Dostupne šeme: " + dBConnector.readSchemas());
@@ -41,14 +39,15 @@ public class TemplateProcess {
         String tables = br.readLine().trim();
         List<String> tableNames = List.of(tables.split(", "));
 
-
         System.out.println("Unesite naziv paketa u kome želite da se generiše kod:");
         String packageName = br.readLine();
 
         System.out.println("Unesite putanju do foldera u koji želite da se generiše kod:");
         String path = br.readLine().trim();
 
-        templateProcessor.processTemplates(jsonTemplates, path, packageName, schema, tableNames);
+        List<File> jsonTemplateConfigs = templateProcessor.chooseJsonFiles();
+
+        templateProcessor.processTemplates(jsonTemplateConfigs, path, packageName, schema, tableNames);
 
     }
 

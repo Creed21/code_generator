@@ -22,4 +22,12 @@ public class Placeholder {
         this.placeholders = placeholders;
     }
 
+    public void addPlaceholder(String key, String value) {
+        this.placeholders.put(key, value);
+    }
+
+    public String getPlaceholderValue(String key) {
+        return this.placeholders.get(key);
+    }
+
 }
