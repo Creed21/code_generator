@@ -21,8 +21,29 @@ After selecting a schema, the generator lists the tables available within that s
 # Step 3: Mapping Table Fields to Java Types
 For each selected table, the tool inspects the table's columns and their data types. It maps the database types (e.g., VARCHAR, INTEGER, TIMESTAMP) to the appropriate Java types (e.g., String, Integer, java.sql.Timestamp). This mapping is essential for generating valid Java classes that correctly represent the database schema.
 
-# Step 4: Create classes
-Create classes on file system
+# Step 4: Code Generation
+Once the user selects the desired option (App or ORM-only), the code generator uses predefined templates to generate the appropriate code:
+
+App Option: Generates both server and client code along with the mini ORM classes, compiling the application into a working executable.
+ORM-Only Option: Generates only the Java classes with ORM annotations, which the user can manually integrate into their project.
+
+# Step 5: Review and Adjust
+As in Version 1, the generated files are saved to a specified directory, and the user can review the generated code. For the app option, the compiled code is immediately runnable, allowing the user to start the server and interact with the generated application.
+
+
+# Summary of the Code Generation Process - Version 2
+PostgreSQL Connection: The user connects to a PostgreSQL database to retrieve the schema and tables.
+Schema and Table Selection: The user selects which tables to use for code generation.
+User Choice - App or ORM Only:
+App Option: Generates a complete server-client application that communicates over sockets and uses a mini ORM for database operations.
+ORM-Only Option: Generates only the ORM model classes annotated for use with the mini ORM.
+Code Generation: The tool applies the appropriate template and generates the necessary code, either compiling it into an executable (App option) or providing ORM classes (ORM-only option).
+Review and Adjust: The user can review the generated code and make any necessary adjustments.
+
+# Advantages of Version 2
+Enhanced Functionality: This version goes beyond basic code generation and provides a fully functioning application, which can be a significant productivity boost for developers working with networking and databases.
+Mini ORM: The lightweight ORM simplifies database interactions without requiring the overhead of more complex ORM frameworks.
+Flexibility: The ability to choose between generating a full application or just ORM classes gives developers flexibility depending on their project needs.
 
 <br>
 
