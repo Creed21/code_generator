@@ -107,4 +107,99 @@ Annotations: The tool applies annotations that describe how the fields map to da
 
 # Version 3.0 - TEMPLATE CODE GENERATOR
 # Release Date: 09/29/2024
+Version 3 of the Code Generator introduces a powerful template system that provides developers with more control over how code is generated from database schemas. This version supports the use of templates and configuration files to customize the code generation process, allowing for the creation of classes in various programming languages based on user input. The entire process is driven by the schema of a PostgreSQL database and user-selected tables.
 
+# Step 1: PostgreSQL Connection and Table Selection
+As in previous versions, the first step involves connecting to a PostgreSQL database. The user is prompted for the database URL, username, and password, and once connected, the generator retrieves the available schemas and tables. The user then selects the tables they want to generate code for.
+
+## Database: PostgreSQL only.
+Schema and Table Selection: Users can select one or more tables for code generation.
+Step 2: Template and Configuration Selection
+After selecting the tables, the user specifies the programming language they wish to generate classes for. The tool then loads the corresponding template and template configuration files, which dictate how the code will be generated. These templates can be customized and stored in a specific directory.
+
+## Template Class:
+The template class defines the structure and format of the generated files. Each language (e.g., Java, Python, TypeScript) has its own template that uses placeholders and logic to dynamically generate code based on the database schema.
+Template Path: Based on the user's selected language, the appropriate template file is chosen. For example, if the user selects Java, the corresponding Java template is loaded.
+
+# java_model_config.json
+```
+{
+    "placeholders": {
+    	"folderName": "model",
+    	"fileName": "${tableNameCapitalized}",
+    	"extension": "java",
+    	"newLine": "\n",
+    	"indent": "\t"
+	},
+	"templateFilePath": "C:\\Users\\Korisnik\\Desktop\\test_generator_v3\\java_model_template.txt"
+}
+
+Template Language Choice: The user can choose between different templates such as Java, Python, TypeScript, etc. The generator will load the correct template based on the selected language.
+
+
+## Template Config Class:
+
+The template configuration class defines how the template is applied to the selected tables and fields. It contains metadata such as the package name, file paths, class names, indentation styles, and other configurations required for generating the final files.
+File Path Configuration: The template configuration contains settings for where the generated files should be saved. These paths can be customized, including the root directory, subdirectories, and file extensions, based on the user's input or predefined configurations.
+Example template config (Java config):
+
+```
+# java_model_template.txt
+```
+package ${fileName};
+
+public class ${tableNameCapitalized} {
+forEachField('${indent}private ${fieldType} ${fieldName};${newLine}')
+
+${indent}public ${tableNameCapitalized}() {}
+
+${indent}public ${tableNameCapitalized}(forEachFieldConcat('${fieldType} ${fieldName}') ) {
+forEachField('${indent}${indent}this.${fieldName} = ${fieldName};${newLine}')
+${indent}}
+
+forEachField('${indent}public void set${fieldNameCapitalized}(${fieldType} ${fieldName}) {${newLine} ${indent}${indent}this.${fieldName} = ${fieldName};${newLine}${indent}}${newLine} ')
+
+forEachField('${indent}public ${fieldType} get${fieldNameCapitalized}() {${newLine}${indent}${indent}return ${fieldName};${indent}${newLine}${indent}}${newLine}')
+}
+```
+
+## Dynamic Path Resolution: The template configuration uses placeholders like ${packageName} and ${tableNameCapitalized} to dynamically generate the correct file paths for the output files.
+File Extensions: The template config also includes details such as file extensions, which may vary depending on the language (e.g., .java for Java, .py for Python).
+Step 3: Mapping Database Schema to Templates
+Once the templates and configuration files are loaded, the generator maps the selected tables and their corresponding fields from the database schema to the placeholders in the templates.
+
+## Table Mapping: Each selected table is mapped to a class based on the template configuration. For instance, a table named users might map to a Java class UserEntity.
+Field Mapping: The generator maps the columns in the database to the fields in the generated classes. The data types from PostgreSQL (e.g., VARCHAR, INTEGER) are mapped to the appropriate language-specific types (e.g., String in Java, str in Python).
+
+# Step 4: Code Generation
+Once the table and field mappings are complete, the generator proceeds with code generation:
+
+File Paths: The generator creates the output directories and file paths as specified in the template configuration. The ${packageName} or equivalent placeholder is resolved based on user input, and files are generated in the appropriate directories.
+
+Class and File Creation: For each selected table, a corresponding class file is created. The generator populates the templates with the actual table and field data, replacing placeholders like ${className}, ${fieldType}, and ${fieldName} with the real values extracted from the database.
+
+## Language-Specific Adjustments: Based on the template, the generator makes language-specific adjustments (e.g., formatting, imports, annotations). This ensures that the generated code adheres to the conventions of the chosen programming language.
+
+ORM Annotations: If the language and template support it, ORM annotations are applied to the generated classes. For example, in Java, the template may include annotations such as @Entity, @Id, and @Column to enable ORM functionality.
+
+# Step 5: Output and Review
+Once the generation process is complete, the generated files are saved in the specified directory structure. The user can then review the generated code, integrate it into their project, or make further adjustments if necessary.
+
+## Generated Files: The generated classes are placed in the configured outputDirectory. The directory structure reflects the package name or equivalent organization for other languages.
+## Compilation: If the user has opted to generate code for a compiled language like Java, they can proceed to compile the code and integrate it into their project.
+
+# Step 6: Manual Adjustments (Optional)
+The generated code is designed to be functional and ready for integration, but users are free to manually adjust the generated classes, add custom logic, or modify the structure as needed.
+
+# Summary of the Code Generation Process - Version 3
+  - PostgreSQL Connection: Users connect to the database, select the schema and tables, and proceed with code generation.
+  - Template and Config Selection: The user chooses the target language for code generation, and the appropriate template and configuration files are loaded.
+  - Schema Mapping: The database schema is mapped to placeholders in the templates, with table names, fields, and data types being resolved dynamically.
+  - Code Generation: Classes are generated based on the templates and configurations, with file paths, class names, and field types being dynamically populated from the database schema.
+  - Output and Review: The generated files are saved to disk according to the configured file paths and are ready for integration or further adjustment.
+
+# Advantages of Version 3
+  - Template Flexibility: Users can customize templates to support various programming languages and adjust code generation based on their specific needs.
+  - Dynamic Path and Configuration Handling: The template config allows dynamic control over file paths, class naming conventions, and other settings.
+  - Multiple Languages: The ability to generate classes in different languages (e.g., Java, Python, TypeScript) makes this version more flexible and suitable for various environments.
+  - Version 3 provides a highly customizable and flexible code generation process, allowing developers to dynamically generate code in different languages based on their database schema and chosen configuration.
