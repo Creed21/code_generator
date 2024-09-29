@@ -13,7 +13,7 @@ Username
 Password
 The tool uses these credentials to connect to the database, utilizing JDBC (Java Database Connectivity) to establish a session with PostgreSQL.
 
-#Step 2: Selecting the Schema and Tables
+## Step 2: Selecting the Schema and Tables
 Once connected, the generator retrieves and lists the available database schemas. The user is then prompted to select the schema they want to work with. The generator uses this schema as the scope for generating code.
 
 After selecting a schema, the generator lists the tables available within that schema. The user can select one or more tables from the console interface. These tables will be used as the basis for generating the Java code.
