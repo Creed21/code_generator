@@ -203,3 +203,5 @@ The generated code is designed to be functional and ready for integration, but u
   - Dynamic Path and Configuration Handling: The template config allows dynamic control over file paths, class naming conventions, and other settings.
   - Multiple Languages: The ability to generate classes in different languages (e.g., Java, Python, TypeScript) makes this version more flexible and suitable for various environments.
   - Version 3 provides a highly customizable and flexible code generation process, allowing developers to dynamically generate code in different languages based on their database schema and chosen configuration.
+
+# this version 3.0 is upgraded to be maven project
